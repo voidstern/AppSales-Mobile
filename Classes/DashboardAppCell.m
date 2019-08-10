@@ -41,7 +41,7 @@ CGFloat const kLabelPadding = 10.0f;
 		nameLabel.backgroundColor = [UIColor clearColor];
 		nameLabel.font = [UIFont systemFontOfSize:17.0f];
 		nameLabel.textAlignment = NSTextAlignmentLeft;
-		nameLabel.textColor = [UIColor blackColor];
+		nameLabel.textColor = [UIColor labelColor];
 		[self.contentView addSubview:nameLabel];
 	}
 	return self;

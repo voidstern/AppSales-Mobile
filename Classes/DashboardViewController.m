@@ -91,7 +91,7 @@
 	BOOL iPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
 	
 	statusVisible = [self shouldShowStatusBar];
-	self.topView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"TopBackground.png"]];
+	self.topView = [[UIImageView alloc] initWithImage:nil];
 	topView.userInteractionEnabled = YES;
 	topView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 	topView.frame = CGRectMake(0, 0, self.view.bounds.size.width, iPad ? 450.0 : self.view.bounds.size.height * 0.5f);

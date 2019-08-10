@@ -174,6 +174,8 @@
 	[super viewDidLoad];
 	previousOrientation = [UIApplication sharedApplication].statusBarOrientation;
 	[self reloadData];
+    
+    self.view.backgroundColor = [UIColor secondarySystemBackgroundColor];
 	
 	UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Back", nil) style:UIBarButtonItemStylePlain target:self action:nil];
 	self.navigationItem.backBarButtonItem = backButton;

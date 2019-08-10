@@ -25,12 +25,12 @@
 		cachedValues = [NSMutableDictionary new];
 		
 		UIView *scaleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 46.0f, self.bounds.size.height - 30.0f)];
-		scaleBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+		scaleBackgroundView.backgroundColor = [UIColor systemBackgroundColor];
 		[self addSubview:scaleBackgroundView];
 		
 		UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(46.0f, self.bounds.size.height - 30.0f, self.bounds.size.width - 46.0f, 1.0f)];
 		bottomLineView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-		bottomLineView.backgroundColor = [UIColor lightGrayColor];
+		bottomLineView.backgroundColor = [UIColor tertiaryLabelColor];
 		[self addSubview:bottomLineView];
 		
 		scaleView = [[ScaleView alloc] initWithFrame:CGRectMake(0.0f, 30.0f, 46.0f, self.bounds.size.height - 60.0f)];
@@ -59,17 +59,17 @@
 		titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 4.0f, self.bounds.size.width, 12.0f)];
 		titleLabel.font = [UIFont systemFontOfSize:11.0f weight:UIFontWeightSemibold];
 		titleLabel.textAlignment = NSTextAlignmentCenter;
-		titleLabel.textColor = [UIColor grayColor];
+		titleLabel.textColor = [UIColor secondaryLabelColor];
 		titleLabel.backgroundColor = [UIColor clearColor];
 		[self addSubview:titleLabel];
 		
 		self.sectionLabelButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		sectionLabelButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-		[self.sectionLabelButton setBackgroundImage:[UIImage imageNamed:@"DateButton"] forState:UIControlStateNormal];
+        [self.sectionLabelButton setBackgroundColor:[UIColor tertiarySystemBackgroundColor]];
 		self.sectionLabelButton.frame = CGRectMake(0.0f, self.bounds.size.height - 30.0f - 16.0f, 46.0f, 32.0f);
 		self.sectionLabelButton.titleLabel.font = [UIFont systemFontOfSize:10.0f weight:UIFontWeightSemibold];
 		self.sectionLabelButton.titleLabel.adjustsFontSizeToFitWidth = YES;
-		[self.sectionLabelButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+		[self.sectionLabelButton setTitleColor:[UIColor secondaryLabelColor] forState:UIControlStateNormal];
 		[self addSubview:self.sectionLabelButton];
 		
 		visibleRange = NSMakeRange(NSNotFound, 0);
@@ -620,11 +620,11 @@
 - (instancetype)initWithFrame:(CGRect)frameRect {
 	self = [super initWithFrame:frameRect];
 	if (self) {
-		self.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+		self.backgroundColor = [UIColor tertiarySystemBackgroundColor];
 		label = [[UILabel alloc] initWithFrame:CGRectMake(-40.0f, -8.0f, 40.0f, 16.0f)];
 		label.backgroundColor = [UIColor clearColor];
 		label.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
-		label.textColor = [UIColor darkGrayColor];
+		label.textColor = [UIColor tertiaryLabelColor];
 		label.textAlignment = NSTextAlignmentRight;
 		label.adjustsFontSizeToFitWidth = YES;
 		[self addSubview:label];
