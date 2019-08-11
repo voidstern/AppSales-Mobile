@@ -32,7 +32,7 @@
 		revenueLabel.backgroundColor = [UIColor clearColor];
 		revenueLabel.font = [UIFont systemFontOfSize:17.0f weight:UIFontWeightRegular];
 		revenueLabel.textAlignment = NSTextAlignmentRight;
-		revenueLabel.textColor = [UIColor blackColor];
+		revenueLabel.textColor = [UIColor labelColor];
 		revenueLabel.adjustsFontSizeToFitWidth = YES;
 		[self.contentView addSubview:revenueLabel];
 		
