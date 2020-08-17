@@ -676,33 +676,26 @@
 @implementation LineView
 
 - (instancetype)initWithFrame:(CGRect)frameRect {
-	self = [super initWithFrame:frameRect];
-	if (self) {
-		if (@available(iOS 13.0, *)) {
-		self.backgroundColor = [UIColor tertiarySystemBackgroundColor];
-				switch (traitCollection.userInterfaceStyle) {
-					case UIUserInterfaceStyleDark:
-						return [UIColor colorWithWhite:0.75f alpha:0.2f];
-					default:
-						return [UIColor colorWithWhite:0.75f alpha:1.0f];
-				}
-			}];
-		} else {
-			self.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
-		}
-		label = [[UILabel alloc] initWithFrame:CGRectMake(-40.0f, -8.0f, 40.0f, 16.0f)];
-		label.backgroundColor = [UIColor clearColor];
-		label.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
-		if (@available(iOS 13.0, *)) {
-			label.textColor = [UIColor secondaryLabelColor];
-		} else {
-		label.textColor = [UIColor tertiaryLabelColor];
-		}
-		label.textAlignment = NSTextAlignmentRight;
-		label.adjustsFontSizeToFitWidth = YES;
-		[self addSubview:label];
-	}
-	return self;
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        if (@available(iOS 13.0, *)) {
+            self.backgroundColor = [UIColor tertiarySystemBackgroundColor];
+        } else {
+            self.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+        }
+        label = [[UILabel alloc] initWithFrame:CGRectMake(-40.0f, -8.0f, 40.0f, 16.0f)];
+        label.backgroundColor = [UIColor clearColor];
+        label.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
+        if (@available(iOS 13.0, *)) {
+            label.textColor = [UIColor secondaryLabelColor];
+        } else {
+            label.textColor = [UIColor tertiaryLabelColor];
+        }
+        label.textAlignment = NSTextAlignmentRight;
+        label.adjustsFontSizeToFitWidth = YES;
+        [self addSubview:label];
+    }
+    return self;
 }
 
 - (void)setLabelText:(NSString *)labelText {
