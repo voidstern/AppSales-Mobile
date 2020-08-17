@@ -13,6 +13,7 @@
 #import "Version.h"
 #import "Review.h"
 #import "DeveloperResponse.h"
+#import "DarkModeCheck.h"
 
 NSString *const developerResponseRegex = @"(?s)(<h2 class=\"response-title\">).*(</div>)";
 
@@ -41,7 +42,14 @@ NSString *const developerResponseRegex = @"(?s)(<h2 class=\"response-title\">).*
 	[super loadView];
 	
 	webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-	webView.backgroundColor = [UIColor whiteColor];
+    
+    if (@available(iOS 13.0, *)) {
+        webView.backgroundColor = [UIColor systemBackgroundColor];
+    } else {
+        // Fallback on earlier versions
+        webView.backgroundColor = [UIColor whiteColor];
+    }
+    
 	webView.opaque = NO;
 	webView.scalesPageToFit = YES;
 	webView.dataDetectorTypes = UIDataDetectorTypeNone;

@@ -36,10 +36,23 @@ NSString *const kAppGitHubRepoInfoPLIST = @"https://gitcdn.xyz/repo/nicolasgomol
 }
 
 - (void)loadView {
+	[super loadView];
+	
 	self.title = NSLocalizedString(@"About", nil);
 	
 	webView = [[UIWebView alloc] initWithFrame:CGRectZero];
-	webView.backgroundColor = [UIColor colorWithRed:197.0f/255.0f green:204.0f/255.0f blue:212.0f/255.0f alpha:1.0f];
+	if (@available(iOS 13.0, *)) {
+		webView.backgroundColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
+			switch (traitCollection.userInterfaceStyle) {
+				case UIUserInterfaceStyleDark:
+					return [UIColor systemBackgroundColor];
+				default:
+					return [UIColor colorWithRed:197.0f/255.0f green:204.0f/255.0f blue:212.0f/255.0f alpha:1.0f];
+			}
+		}];
+	} else {
+		webView.backgroundColor = [UIColor colorWithRed:197.0f/255.0f green:204.0f/255.0f blue:212.0f/255.0f alpha:1.0f];
+	}
 	webView.opaque = NO;
 	webView.scalesPageToFit = YES;
 	webView.dataDetectorTypes = UIDataDetectorTypeNone;
@@ -50,6 +63,11 @@ NSString *const kAppGitHubRepoInfoPLIST = @"https://gitcdn.xyz/repo/nicolasgomol
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
+	if (didCheckForUpdates) { return; }
+	didCheckForUpdates = YES;
+	
 	NSString *aboutHTML = AboutViewController.aboutHTML;
 	aboutHTML = [aboutHTML stringByReplacingOccurrencesOfString:@"[[APP_VERSION_STATUS_COLOR]]" withString:@""];
 	aboutHTML = [aboutHTML stringByReplacingOccurrencesOfString:@"[[APP_VERSION_STATUS_TEXT]]" withString:@"CHECKING FOR UPDATES..."];

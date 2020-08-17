@@ -342,24 +342,27 @@
 #pragma mark - Actions
 
 - (void)downloadReports:(id)sender {
-	if (account.accessToken && account.accessToken.length > 0) { // Only download reports for accounts with an access token.
-		if (!account.vendorID || account.vendorID.length == 0) {
-			[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Vendor ID Missing", nil) 
-										 message:NSLocalizedString(@"You have not entered a vendor ID for this account. Please go to the account's settings and fill in the missing information.", nil) 
-										delegate:nil 
-							   cancelButtonTitle:NSLocalizedString(@"OK", nil) 
-							   otherButtonTitles:nil] show];
-		} else {
-			[[ReportDownloadCoordinator sharedReportDownloadCoordinator] downloadReportsForAccount:self.account];
-		}
-	} else {
-		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Token Missing", nil)
-									message:[NSString stringWithFormat:NSLocalizedString(@"Access token not set for this account. Please go to the account's settings and fill in the missing information.", nil), account.displayName]
+	if ((account.providerID == nil) || (account.providerID.length == 0)) {
+		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Provider ID Missing", nil)
+									message:NSLocalizedString(@"Provider ID not set for this account. Please go to the account's settings and fill in the missing information.", nil)
 								   delegate:nil
 						  cancelButtonTitle:NSLocalizedString(@"OK", nil)
 						  otherButtonTitles:nil] show];
+	} else if ((account.accessToken == nil) || (account.accessToken.length == 0)) {
+		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Access Token Missing", nil)
+									message:NSLocalizedString(@"Access token not set for this account. Please go to the account's settings and fill in the missing information.", nil)
+								   delegate:nil
+						  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+						  otherButtonTitles:nil] show];
+	} else if ((account.vendorID == nil) || (account.vendorID.length == 0)) {
+		[[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Vendor ID Missing", nil)
+									message:NSLocalizedString(@"You have not entered a vendor ID for this account. Please go to the account's settings and fill in the missing information.", nil)
+								   delegate:nil
+						  cancelButtonTitle:NSLocalizedString(@"OK", nil)
+						  otherButtonTitles:nil] show];
+	} else {
+		[[ReportDownloadCoordinator sharedReportDownloadCoordinator] downloadReportsForAccount:account];
 	}
-	
 }
 
 - (void)stopDownload:(id)sender {
@@ -564,7 +567,11 @@
 			return [UIColor colorWithRed:0.843 green:0.278 blue:0.282 alpha:1.0];
 		}
 	}
-	return [UIColor darkGrayColor];
+	if (@available(iOS 13.0, *)) {
+		return [UIColor secondaryLabelColor];
+	} else {
+		return [UIColor darkGrayColor];
+	}
 }
 
 - (NSString *)graphView:(GraphView *)graphView labelForBarAtIndex:(NSUInteger)index {

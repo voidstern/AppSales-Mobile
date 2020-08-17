@@ -8,6 +8,7 @@
 
 #import "GraphView.h"
 #import "ASProgressHUD.h"
+#import "DarkModeCheck.h"
 
 #define ANIMATION_DURATION	0.4
 
@@ -25,12 +26,34 @@
 		cachedValues = [NSMutableDictionary new];
 		
 		UIView *scaleBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 46.0f, self.bounds.size.height - 30.0f)];
-		scaleBackgroundView.backgroundColor = [UIColor systemBackgroundColor];
+		if (@available(iOS 13.0, *)) {
+			scaleBackgroundView.backgroundColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
+				switch (traitCollection.userInterfaceStyle) {
+					case UIUserInterfaceStyleDark:
+						return [UIColor colorWithRed:28.0f/255.0f green:28.0f/255.0f blue:30.0f/255.0f alpha:1.0f];
+					default:
+						return [UIColor colorWithWhite:0.9f alpha:1.0f];
+				}
+			}];
+		} else {
+			scaleBackgroundView.backgroundColor = [UIColor colorWithWhite:0.9f alpha:1.0f];
+		}
 		[self addSubview:scaleBackgroundView];
 		
 		UIView *bottomLineView = [[UIView alloc] initWithFrame:CGRectMake(46.0f, self.bounds.size.height - 30.0f, self.bounds.size.width - 46.0f, 1.0f)];
 		bottomLineView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-		bottomLineView.backgroundColor = [UIColor tertiaryLabelColor];
+		if (@available(iOS 13.0, *)) {
+			bottomLineView.backgroundColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
+				switch (traitCollection.userInterfaceStyle) {
+					case UIUserInterfaceStyleDark:
+						return [UIColor systemGray5Color];
+					default:
+						return [UIColor lightGrayColor];
+				}
+			}];
+		} else {
+			bottomLineView.backgroundColor = [UIColor lightGrayColor];
+		}
 		[self addSubview:bottomLineView];
 		
 		scaleView = [[ScaleView alloc] initWithFrame:CGRectMake(0.0f, 30.0f, 46.0f, self.bounds.size.height - 60.0f)];
@@ -65,11 +88,18 @@
 		
 		self.sectionLabelButton = [UIButton buttonWithType:UIButtonTypeCustom];
 		sectionLabelButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-        [self.sectionLabelButton setBackgroundColor:[UIColor tertiarySystemBackgroundColor]];
+        [self.sectionLabelButton setBackgroundImage:[DarkModeCheck checkForDarkModeImage:@"DateButton"] forState:UIControlStateNormal];
 		self.sectionLabelButton.frame = CGRectMake(0.0f, self.bounds.size.height - 30.0f - 16.0f, 46.0f, 32.0f);
 		self.sectionLabelButton.titleLabel.font = [UIFont systemFontOfSize:10.0f weight:UIFontWeightSemibold];
 		self.sectionLabelButton.titleLabel.adjustsFontSizeToFitWidth = YES;
+        
+        
+        if (@available(iOS 13.0, *)) {
 		[self.sectionLabelButton setTitleColor:[UIColor secondaryLabelColor] forState:UIControlStateNormal];
+        } else {
+            [self.sectionLabelButton setTitleColor:[UIColor darkGrayColor] forState:UIControlStateNormal];
+        }
+		
 		[self addSubview:self.sectionLabelButton];
 		
 		visibleRange = NSMakeRange(NSNotFound, 0);
@@ -78,6 +108,11 @@
 		max = -1.0f;
 	}
 	return self;
+}
+
+- (void)traitCollectionDidChange:(UITraitCollection *)previousTraitCollection {
+	[super traitCollectionDidChange:previousTraitCollection];
+	[self.sectionLabelButton setBackgroundImage:[DarkModeCheck checkForDarkModeImage:@"DateButton"] forState:UIControlStateNormal];
 }
 
 - (void)longPress:(UILongPressGestureRecognizer *)recognizer {
@@ -320,7 +355,11 @@
 			UILabel *dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, frameForBar.size.height, frameForBar.size.width, 30.0f)];
 			dateLabel.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
 			dateLabel.backgroundColor = [UIColor clearColor];
-			dateLabel.textColor = [UIColor darkGrayColor];
+			if (@available(iOS 13.0, *)) {
+				dateLabel.textColor = [UIColor secondaryLabelColor];
+			} else {
+				dateLabel.textColor = [UIColor darkGrayColor];
+			}
 			dateLabel.textAlignment = NSTextAlignmentCenter;
 			dateLabel.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
 			dateLabel.adjustsFontSizeToFitWidth = YES;
@@ -336,7 +375,18 @@
 			CGRect separatorFrame = CGRectMake(-(int)separatorWidth/2, frameForBar.size.height, separatorWidth, separatorHeight);
 			UIView *separatorView = [[UIView alloc] initWithFrame:separatorFrame];
 			separatorView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
-			separatorView.backgroundColor = [UIColor lightGrayColor];
+			if (@available(iOS 13.0, *)) {
+				separatorView.backgroundColor = [UIColor colorWithDynamicProvider:^UIColor * _Nonnull(UITraitCollection * _Nonnull traitCollection) {
+					switch (traitCollection.userInterfaceStyle) {
+						case UIUserInterfaceStyleDark:
+							return [UIColor systemGray5Color];
+						default:
+							return [UIColor lightGrayColor];
+					}
+				}];
+			} else {
+				separatorView.backgroundColor = [UIColor lightGrayColor];
+			}
 			[barView addSubview:separatorView];
 			
 			NSArray *stackedValues = [self stackedValuesForBarAtIndex:i];
@@ -413,7 +463,11 @@
 		label.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
 		label.adjustsFontSizeToFitWidth = YES;
 		label.textAlignment = NSTextAlignmentCenter;
-		label.textColor = [UIColor darkGrayColor];
+		if (@available(iOS 13.0, *)) {
+			label.textColor = [UIColor secondaryLabelColor];
+		} else {
+			label.textColor = [UIColor darkGrayColor];
+		}
 		[self addSubview:label];
 	}
 	return self;
@@ -471,8 +525,12 @@
 
 - (UIView *)selectedBackgroundView {
 	if (!selectedBackgroundView) {
-		selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(2, 3, self.bounds.size.width - 4, self.bounds.size.height + 18)];
-		selectedBackgroundView.backgroundColor = [UIColor colorWithRed:0.698 green:0.804 blue:0.871 alpha:0.8];
+		selectedBackgroundView = [[UIView alloc] initWithFrame:CGRectMake(2, 3, self.bounds.size.width - 4, self.bounds.size.height + 25)];
+		if (@available(iOS 13.0, *)) {
+			selectedBackgroundView.backgroundColor = [UIColor systemGray5Color];
+		} else {
+			selectedBackgroundView.backgroundColor = [UIColor colorWithRed:229.0f/255.0f green:229.0f/255.0f blue:234.0f/255.0f alpha:1.0f];
+		}
 		selectedBackgroundView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
 		selectedBackgroundView.layer.cornerRadius = 5.0;
 		selectedBackgroundView.alpha = 0.0;
@@ -620,11 +678,26 @@
 - (instancetype)initWithFrame:(CGRect)frameRect {
 	self = [super initWithFrame:frameRect];
 	if (self) {
+		if (@available(iOS 13.0, *)) {
 		self.backgroundColor = [UIColor tertiarySystemBackgroundColor];
+				switch (traitCollection.userInterfaceStyle) {
+					case UIUserInterfaceStyleDark:
+						return [UIColor colorWithWhite:0.75f alpha:0.2f];
+					default:
+						return [UIColor colorWithWhite:0.75f alpha:1.0f];
+				}
+			}];
+		} else {
+			self.backgroundColor = [UIColor colorWithWhite:0.75f alpha:1.0f];
+		}
 		label = [[UILabel alloc] initWithFrame:CGRectMake(-40.0f, -8.0f, 40.0f, 16.0f)];
 		label.backgroundColor = [UIColor clearColor];
 		label.font = [UIFont systemFontOfSize:12.0f weight:UIFontWeightSemibold];
+		if (@available(iOS 13.0, *)) {
+			label.textColor = [UIColor secondaryLabelColor];
+		} else {
 		label.textColor = [UIColor tertiaryLabelColor];
+		}
 		label.textAlignment = NSTextAlignmentRight;
 		label.adjustsFontSizeToFitWidth = YES;
 		[self addSubview:label];
